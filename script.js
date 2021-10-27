@@ -57,16 +57,67 @@ function traversalChilds(target, checkOrUncheck) {
 }
 
 checkboxElements.forEach((element) => {
-  element.addEventListener("click", (e) => {
-    if (e.target.checked) {
-      traversalParents(e.target, true);
-      traversalChilds(e.target, true);
-      console.log(e.target.getAttribute("level"));
+  element.addEventListener("click", ({ target }) => {
+    if (target.checked) {
+      traversalParents(target, true);
+      traversalChilds(target, true);
+      console.log(target.getAttribute("level"));
     } else {
-      traversalParents(e.target, false);
-      traversalChilds(e.target, false);
+      traversalParents(target, false);
+      traversalChilds(target, false);
+    }
+  });
+
+
+
+  element.addEventListener("mouseenter", ({ target }) => {
+    let targetLevel = parseInt(target.getAttribute("level"));
+    target.parentElement.style.backgroundColor  = "#f9866d";
+    let curElement = target.parentElement;
+
+    for (let i = 0; i < targetLevel; i++) {
+      curElement = curElement.parentElement;
+    }
+    // cur element !== null
+    while (curElement) {
+      curElement = curElement.previousElementSibling;
+      if (curElement) {
+        const previousSiblingInput = curElement.querySelector("input[type='checkbox']");
+        const previousLevel = parseInt(previousSiblingInput.getAttribute("level"));
+
+        if (targetLevel > previousLevel) {
+          previousSiblingInput.parentElement.style.backgroundColor = "#f9866d";
+          targetLevel = previousLevel;
+        }
+      }
+    }
+  });
+
+
+
+  element.addEventListener("mouseleave", ({ target }) => {
+    let targetLevel = parseInt(target.getAttribute("level"));
+    target.parentElement.style.backgroundColor  = "#ffff";
+
+    let curElement = target.parentElement;
+
+    for (let i = 0; i < targetLevel; i++) {
+      curElement = curElement.parentElement;
+    }
+    // cur element !== null
+    while (curElement) {
+      curElement = curElement.previousElementSibling;
+      if (curElement) {
+        const previousSiblingInput = curElement.querySelector("input[type='checkbox']");
+        const previousLevel = parseInt(previousSiblingInput.getAttribute("level"));
+
+        if (targetLevel > previousLevel) {
+          previousSiblingInput.parentElement.style.backgroundColor = '#ffff';
+          targetLevel = previousLevel;
+        }
+      }
     }
   });
 });
 
-// backgound colo effect;
+// backgound color hover effect effect;
