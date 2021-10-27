@@ -47,7 +47,7 @@ function traversalChilds(target, checkOrUncheck) {
       const previousSiblingInput = curElement.querySelector("input[type='checkbox']");
       const previousLevel = parseInt(previousSiblingInput.getAttribute("level"));
 
-      if (targetLevel < previousLevel) {
+      if (targetLevel < previousLevel || targetLevel === 0) {
         previousSiblingInput.checked = checkOrUncheck;
       } else {
         break;
